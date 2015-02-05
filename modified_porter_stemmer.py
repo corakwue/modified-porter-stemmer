@@ -418,9 +418,11 @@ class ModifiedPorterStemmer(StemmerI):
             if word.endswith("ization"):
                 return word[:-7] + "ize" if self._m(word, len(word)-8) else word
             elif word.endswith("ation"):
-                return word[:-5] + "ate" if self._m(word, len(word)-6) else word
+                return word[:-5] + "ate" if self._m(word, len(word)-6) or self._consec_cons(word) else word
             elif word.endswith("ator"):
                 return word[:-4] + "ate" if self._m(word, len(word)-5) else word
+            elif word.endswith("tion"):
+                return word[:-3]  if self._consec_cons(word) and not self._cvc(word, len(word[:-4])-1) else word
             else:
                 return word
         elif ch == 's':
